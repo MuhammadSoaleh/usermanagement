@@ -1,0 +1,42 @@
+﻿@model usermanagement.Models.Employee
+
+<form method="post" asp-action="Edit">
+
+    <!-- Name -->
+    <div class="mb-3">
+        <label asp-for="name" class="form-label">Name</label>
+        <input asp-for="name" class="form-control" />
+    </div>
+
+    <!-- Phone -->
+    <div class="mb-3">
+        <label asp-for="phoneno" class="form-label">Phone</label>
+        <input asp-for="phoneno" class="form-control" />
+    </div>
+
+    <!-- Email -->
+    <div class="mb-3">
+        <label asp-for="email" class="form-label">Email</label>
+        <input asp-for="email" class="form-control" />
+    </div>
+
+    <!-- Company Dropdown -->
+    <div class="mb-3">
+        <label asp-for="company" class="form-label">Company</label>
+        <select asp-for="company" class="form-select"
+                asp-items="@(new SelectList(Model.companies ?? new List<company>(), "id", "name"))">
+            <option value="">-- Select Company --</option>
+        </select>
+    </div>
+
+    <!-- Department Dropdown -->
+    <div class="mb-3">
+        <label asp-for="department" class="form-label">Department</label>
+        <select asp-for="department" class="form-select"
+                asp-items="@(new SelectList(Model.Department ?? new List<Department>(), "id", "departmentname"))">
+            <option value="">-- Select Department --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

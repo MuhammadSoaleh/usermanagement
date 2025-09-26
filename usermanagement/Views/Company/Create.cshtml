@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model usermanagement.Models.company;
+<div class="container-fluid bg-body-tertiary">
+    <h1 class="text-primary">Create Company</h1>
+    <form asp-action="Create" method="post" class="bg-body-tertiary my-5 mx-5">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Company Name</label>
+            <input type="text" asp-for="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Description</label>
+            <input type="text" asp-for="description" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Phone Number</label>
+            <input type="number" asp-for="phonenumber" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Email</label>
+            <input type="email" asp-for="email" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" asp-for="isactive" type="checkbox" value="" id="checkDefault">
+            <label class="form-check-label" for="checkDefault">
+              IsActive
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

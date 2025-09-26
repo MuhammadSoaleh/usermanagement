@@ -1,0 +1,42 @@
+﻿@model IEnumerable<usermanagement.Models.SuperAdmin>
+
+<div>
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Password</th>
+                <th>IsAdmin</th>
+                <th>IsActive</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.username</td>
+                    <td>@item.password</td>
+                    <td>@item.isadmin</td>
+                    <td>@item.isactive</td>
+                    <td>
+                        <a asp-controller="UserManagement" asp-action="Edit" asp-route-id="@item.id" class="btn btn-primary">Edit</a>
+
+                        <!-- Recommended: Use a POST form for delete -->
+                        <form asp-controller="UserManagement" asp-action="Delete" asp-route-id="@item.id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#myTable').DataTable();
+            });
+        </script>
+    }
+</div>
