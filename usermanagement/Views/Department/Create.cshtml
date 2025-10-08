@@ -14,7 +14,7 @@
 
         @if (Model?.Companies != null)
         {
-            <select asp-for="companyname" class="form-select" asp-items="@(new SelectList(Model.Companies, "id", "name"))">
+            <select asp-for="companyname" class="form-select" asp-items="@(new SelectList(Model.Companies, "name", "name"))">
                 <option value="">Select Company</option>
             </select>
         }

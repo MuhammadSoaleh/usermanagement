@@ -118,8 +118,10 @@ namespace usermanagement.Controllers
                 company.isactive = false;
                 applicationdbcontext.employees.Update(company);
                 await applicationdbcontext.SaveChangesAsync();
+                
             }
             return RedirectToAction("Index");
+
         }
 
     }

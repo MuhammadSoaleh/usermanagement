@@ -24,7 +24,7 @@
     <div class="mb-3">
         <label asp-for="company" class="form-label">Company</label>
         <select asp-for="company" class="form-select"
-                asp-items="@(new SelectList(Model.companies ?? new List<company>(), "id", "name"))">
+                asp-items="@(new SelectList(Model.companies ?? new List<company>(), "name", "name"))">
             <option value="">-- Select Company --</option>
         </select>
     </div>
@@ -33,7 +33,7 @@
     <div class="mb-3">
         <label asp-for="department" class="form-label">Department</label>
         <select asp-for="department" class="form-select"
-                asp-items="@(new SelectList(Model.Department ?? new List<Department>(), "id", "departmentname"))">
+                asp-items="@(new SelectList(Model.Department ?? new List<Department>(), "departmentname", "departmentname"))">
             <option value="">-- Select Department --</option>
         </select>
     </div>

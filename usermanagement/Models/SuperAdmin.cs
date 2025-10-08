@@ -7,7 +7,7 @@
         public string password { get; set; }
         public bool isactive { get; set; }
         public bool isadmin { get; set; }
-        //public bool issuperadmin { get; set; }
+        
 
 
     }

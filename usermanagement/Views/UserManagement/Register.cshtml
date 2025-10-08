@@ -16,7 +16,15 @@
             <label for="exampleInputPassword1" class="form-label">Password</label>
             <input type="password" asp-for="password" class="form-control" id="exampleInputPassword1">
         </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" asp-for="isadmin" value="" id="checkDefault">
+            <label class="form-check-label" for="checkDefault">
+                IsAdmin
+            </label>
+        </div>
         
         <button type="submit" class="btn btn-primary">Submit</button>
+
+        <div> If Already Account then  <a asp-action="Login" asp-controller="UserManagement">Login </a></div>
     </form>
 </div>

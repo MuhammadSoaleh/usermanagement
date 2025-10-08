@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace usermanagement.Filters // <-- Change to match your project namespace
+namespace usermanagement.Filters
 {
     public class AdminOnlyAttribute : AuthorizeAttribute, IAuthorizationFilter
     {
@@ -19,11 +19,28 @@ namespace usermanagement.Filters // <-- Change to match your project namespace
 
             var isAdminClaim = user.FindFirst("IsAdmin")?.Value;
 
-            if (string.IsNullOrEmpty(isAdminClaim) || isAdminClaim.ToLower() != "true")
+            if (string.IsNullOrEmpty(isAdminClaim))
             {
-                // Not an admin → 403 Forbidden
+                // Claim missing → Unauthorized
                 context.Result = new ForbidResult();
+                return;
             }
+
+            if (isAdminClaim.ToLower() == "true")
+            {
+                // Admin → Allow
+                return;
+            }
+            else if (isAdminClaim.ToLower() == "false")
+            {
+                // Employee → You can log or do something here
+                // Example: redirect to employee dashboard or deny
+                context.Result = new RedirectToActionResult("Index", "Employee", null);
+                return;
+            }
+
+            // Unknown value → Forbidden
+            context.Result = new ForbidResult();
         }
     }
 }

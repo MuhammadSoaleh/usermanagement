@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using usermanagement.Data;
 using usermanagement.Models;
 using usermanagement.Filters;
+using System.Diagnostics.Eventing.Reader;
 namespace usermanagement.Controllers
 {
     public class UserManagementController : Controller
@@ -90,36 +91,41 @@ namespace usermanagement.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(SuperAdmin superAdmin)
+        public async Task<IActionResult> Login(SuperAdmin model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(model);
+
+            // ✅ Query user from DB
+            var user = await _context.SuperAdmins
+                .FirstOrDefaultAsync(u => u.username == model.username && u.isactive);
+
+            if (user != null && user.password == model.password) // 🔴 Use hash in real apps
             {
-                var admin = await _context.SuperAdmins
-                    .FirstOrDefaultAsync(a => a.username == superAdmin.username && a.password == superAdmin.password && a.isactive);
+                // ✅ Create claims based on actual isadmin value
+                var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.username),
+            new Claim("IsAdmin", user.isadmin.ToString().ToLower()) // "true"/"false"
+        };
 
-                if (admin != null)
-                {
-                    // ✅ Create claims
-                    var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, admin.username),
-                new Claim("IsAdmin", "true") // ⚠️ or use admin.isadmin.ToString().ToLower() if it's a property
-            };
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
 
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                    // ✅ Sign in user
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
+                // ✅ Redirect based on role
+                if (user.isadmin)
                     return RedirectToAction("Index", "UserManagement");
-                }
-
-                ModelState.AddModelError("", "Invalid username or password");
+                else
+                    return RedirectToAction("Index", "Employee");
             }
 
-            return View(superAdmin);
+            // ❌ If login fails
+            ModelState.AddModelError("", "Invalid username or password");
+            return View(model);
         }
+
 
         //// POST: /UserManagement/Login
         //[HttpPost]
@@ -154,8 +160,10 @@ namespace usermanagement.Controllers
             { 
                 username=superAdmin.username,
                 password=superAdmin.password,
-                isactive=true
+                isactive=true,
+                isadmin=superAdmin.isadmin,
             }; 
+            
             await _context.SuperAdmins.AddAsync(superAdmin1);
             await _context.SaveChangesAsync();
             return RedirectToAction("Login", "UserManagement");

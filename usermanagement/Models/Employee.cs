@@ -15,6 +15,9 @@ namespace usermanagement.Models
         [NotMapped]
         public int companyid { get; set; }
         public bool isactive { get; set; }
+        
+       // public DateTime DateTime { get; set; }=DateTime.Now;
+
         [NotMapped]
         public List<Department> Department { get; set; }
         [NotMapped]
